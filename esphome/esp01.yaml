@@ -1,0 +1,38 @@
+esphome:
+  name: esp01
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_psk
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp01 Fallback Hotspot"
+    password: "9NzupwTF0BSy"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+sensor:
+  - platform: dht
+    pin: 2
+    model: DHT11
+    temperature:
+      name: "Bathroom Room Temperature"
+    humidity:
+      name: "Bathroom Room Humidity"
+    update_interval: 60s
+    
+  - platform: wifi_signal
+    name: "WiFi Signal Sensor"
+    update_interval: 60s
+    

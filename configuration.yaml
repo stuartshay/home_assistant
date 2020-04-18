@@ -1,0 +1,143 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
+homekit:
+
+#lovelace:
+#  mode: yaml
+
+local_ip:
+
+speedtestdotnet:
+  scan_interval:
+    minutes: 30
+  monitored_conditions:
+    - ping
+    - download
+    - upload
+
+
+sensor:
+  
+  - platform: diskspace
+    name: Main Disk
+    path: "/"
+    unit_of_measure: "GB"
+ 
+  - platform: rpi_power
+    text_state: true
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /home
+      - type: memory_free
+  - platform: uptime
+    name: Time Online
+    unit_of_measurement: hours
+  - platform: filesize
+    file_paths:
+      - /config/home-assistant_v2.db
+  
+  - platform: command_line
+    name: CPU Temperature
+    command: "cat /sys/class/thermal/thermal_zone0/temp"
+    # If errors occur, make sure configuration file is encoded as UTF-8
+    unit_of_measurement: "°C"
+    value_template: '{{ value | multiply(0.001) | round(1) }}'
+  
+  - platform: rest
+    resource: http://ip.jsontest.com
+    scan_interval: 360
+    name: External IP
+    value_template: '{{ value_json.ip }}'
+  
+  - platform: mitemp_bt
+    name: Living Room Temp
+    mac: '58:2D:34:10:DD:38'
+    monitored_conditions:
+      - temperature
+      - humidity
+      - battery 
+  
+  
+  - platform: co2signal
+    token:  ab3608c7a05c5ac3
+  - platform: mqtt
+    name: Bridge state
+    state_topic: "zigbee2mqtt/bridge/state"
+    icon: mdi:router-wireless
+
+  - platform: mqtt
+    name: Zigbee2mqtt Networkmap
+    state_topic: zigbee2mqtt/bridge/networkmap/raw
+    value_template: >-
+      {{ now().strftime('%Y-%m-%d %H:%M:%S') }}
+    # again, if you change base_topic of Zigbee2mqtt, change json_attributes_topic accordingly
+    json_attributes_topic: zigbee2mqtt/bridge/networkmap/raw
+
+
+switch:
+  - platform: virtual
+    name: Switch 1
+
+binary_sensor:
+  - platform: virtual
+    name: 'Binary Sensor 1'
+    initial_value: 'on'
+    class: presence
+
+light:
+  - platform: virtual
+    name: 'Light 1'
+    initial_value: 'on'
+    initial_brightness: 100
+
+lock:
+  - platform: virtual
+    name: Front Door Lock
+
+
+device_tracker:
+  - platform: bluetooth_tracker
+  - platform: iphonedetect
+    consider_home: 60
+    new_device_defaults:
+      track_new_devices: true
+    hosts:
+      stuartiphone: 192.168.1.177
+
+  - platform: virtual
+    devices:
+      - virtual_user1
+      - virtual_user2
+
+
+
+
+influxdb:
+  host: 192.168.1.204
+  include:
+    entities:
+       - sensor.0x00158d000230374c_temperature
+       - sensor.0x00158d000230374c_humidity
+       - sensor.sensor_1_temperature
+       - sensor.sensor_1_humidity
+       - sensor.sensor_1_battery_level
+
+#mqtt:
+#  broker: core-mosquitto # This will have to be your mqtt broker, Mosquitto addon is recommended.
+#  discovery: true
+

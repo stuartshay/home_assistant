@@ -1,0 +1,33 @@
+esphome:
+  name: esp32cam01
+  platform: ESP32
+  board: nodemcu-32s
+
+
+wifi:
+  ssid: "All-Star02"
+  password: "0FB310FF280FB310FF28123456"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Esp32Cam01 Fallback Hotspot"
+    password: "9NJr8F197Ge7"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+web_server:
+  port: 80
+
+
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal Sensor"
+    update_interval: 60s

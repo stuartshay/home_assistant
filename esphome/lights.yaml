@@ -1,0 +1,59 @@
+esphome:
+  name: lights
+  platform: ESP32
+  board: esp-wrover-kit
+  
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_psk
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Lights Fallback Hotspot"
+    password: "gpjCQsF58T2q"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+web_server:
+  port: 80
+
+# Enable Bluetooth scanning for this ESP32
+esp32_ble_tracker:
+
+sensor:
+  - platform: xiaomi_lywsdcgq
+    mac_address: 58:2D:34:10:DD:38
+    temperature:
+      name: "Sensor_1 Temperature"
+    humidity:
+      name: "Sensor_1 Humidity"
+    battery_level:
+      name: "Sensor_1 Battery Level"
+
+  - platform: wifi_signal
+    name: "WiFi Signal Sensor"
+    update_interval: 60s
+    
+time:
+  - platform: homeassistant
+    on_time:
+      - seconds: 0
+        minutes: 0
+        hours: 4
+        days_of_week: MON-SUN
+        then:
+           - switch.toggle: restart_switch
+
+switch:
+  - platform: restart
+    name: "test_temperature Restart"
+    id: restart_switch
+     

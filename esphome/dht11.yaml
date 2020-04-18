@@ -1,0 +1,44 @@
+esphome:
+  name: dht11
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_psk
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Dht11 Fallback Hotspot"
+    password: "xrSfd8o1hRzH"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+mqtt:
+  broker: 192.168.1.204
+  username: mqttuser
+  password: mqttpassword
+
+
+ota:
+
+# Example configuration.yaml entry
+sensor:
+  - platform: dht
+    pin: 5
+    model: DHT11
+    temperature:
+      name: "Living Room Temperature"
+    humidity:
+      name: "Living Room Humidity"
+    update_interval: 60s
+    
+  - platform: wifi_signal
+    name: "WiFi Signal Sensor"
+    update_interval: 60s

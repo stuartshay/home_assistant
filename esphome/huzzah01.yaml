@@ -1,0 +1,59 @@
+esphome:
+  name: huzzah01
+  platform: ESP8266
+  board: huzzah
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_psk
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Huzzah01 Fallback Hotspot"
+    password: "9TIBa1YAXftr"
+
+captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+web_server:
+  port: 80
+
+switch:
+
+  - platform: gpio
+    name: "RED LED"
+    pin:
+      number: 16
+      inverted: no
+
+  - platform: gpio
+    name: "YELLOW LED"
+    pin:
+      number: 5
+      inverted: no
+
+  - platform: gpio
+    name: "GREEN LED"
+    pin:
+      number: 4
+      inverted: no
+      
+  - platform: gpio
+    name: "BLUE LED"
+    pin:
+      number: 15
+      inverted: no
+  
+      
+sensor:
+  - platform: wifi_signal
+    name: "WiFi Signal Sensor"
+    update_interval: 60s
+

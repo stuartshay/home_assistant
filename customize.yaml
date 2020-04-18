@@ -1,0 +1,22 @@
+zone.home:
+  friendly_name: Home
+  icon: mdi:home
+  latitude: 40.73616114558922
+  longitude: -74.03915584087373
+  radius: 100
+
+
+sensor.speedtest_download:
+  friendly_name: Download Speed
+  icon: mdi:cloud-download
+
+sensor.speedtest_upload:
+  friendly_name: Upload Speed
+  icon: mdi:cloud-upload
+
+sensor.speedtest_ping:
+  friendly_name: Ping
+  icon: mdi:mixcloud
+    
+sensor.local_ip:
+  friendly_name: Local IP
